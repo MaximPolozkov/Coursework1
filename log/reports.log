@@ -1,0 +1,9 @@
+2025-08-04 10:21:34,867 reports.py wastes_category INFO: Запускаем функцию
+2025-08-04 10:21:34,867 reports.py wastes_category INFO: Проверяем есть ли переданная дата
+2025-08-04 10:21:34,868 reports.py wastes_category INFO: Если есть переданная дата то получаем только дату в формате datetime
+2025-08-04 10:21:34,868 reports.py wastes_category INFO: Получаем отсчитываем три месяца
+2025-08-04 10:21:34,893 reports.py wastes_category INFO: Получаем дату по полю Дата операции и преобразуем ее в объект datetime
+2025-08-04 10:21:34,894 reports.py wastes_category INFO: Получаем поле Категория операции в Датафрэйме и приравниваем к категирии которую получили в функции
+2025-08-04 10:21:34,902 reports.py wastes_category INFO: Получаем поле Сумма операции с округлением
+2025-08-04 10:21:34,902 reports.py wastes_category INFO: Создаем Датафрэйм с условиями
+2025-08-04 10:21:34,908 reports.py wastes_category INFO: Возврощаем созданный Датафрэйм
