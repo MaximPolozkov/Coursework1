@@ -53,9 +53,9 @@ def handle_date_errors(func):
         except ValueError as e:
             logger.error(f"Ошибка при обработке даты: {e}")
             print(f"Ошибка при обработке даты: {e}")
-            return {}
+            return []
         except Exception as e:
             logger.error(f"Произошла ошибка в декораторе: {e}")
             print(f"Произошла ошибка в декораторе: {e}\nTraceback: {traceback.format_exc()}")
-            return {}
+            return []
     return wrapper

@@ -1,8 +1,9 @@
+import datetime
 import json
 import logging
 import os
 import dotenv
-from views import get_current_time, reader_xlsx, get_currency, get_stocks, get_prices_ticker
+from views import get_current_time, reader_xlsx, get_currency, get_stocks, get_prices_ticker, sort_data
 
 dotenv.load_dotenv()
 
@@ -10,11 +11,9 @@ ex_change_api = os.getenv('API_KEY_CURRENCY')
 secret_api = os.getenv('API_KEY_SECURITY')
 ticker_api = os.getenv('API_KEY_TICKER')
 
-filename_json = os.getenv('PATH_SETTING_JSON')
+filename_json = "../user_settings.json"
 
-
-time = get_current_time()
-path = os.getenv('PATH_XLSX')
+path = "../data/operations.xlsx"
 
 log_dir = '../log'
 log_file = os.path.join(log_dir, 'main.log')
@@ -34,19 +33,24 @@ conclusion = {"greeting": "", "cards": [], "top_transactions": [], "currency_rat
 currency = []
 
 
-def date_tim(times: time):
+def date_tim(date: str):
     logger.info("Запуск функции")
-    """Главная функция, принимающая на вход строку с датой и временем"""
+    """Главная функция, принимающая на вход строку с датой"""
     start = input("Введите ???\n")
+    #datetime_object = datetime.datetime.strptime(data_tim, "%d.%m.%Y")
+    #date = datetime_object.strptime("%d.%m.%Y")
+
+    time = get_current_time()
+
     if "???" in start:
         logger.info("Определение времени суток")
-        if '6:00' <= str(times) <= '10:00':
+        if '6:00' <= str(time) <= '10:00':
             time_of_day = "Доброе утро"
             conclusion["greeting"] = time_of_day
-        elif '10:00' <= str(times) <= '15:00':
+        elif '10:00' <= str(time) <= '15:00':
             time_of_day = 'Добрый день'
             conclusion["greeting"] = time_of_day
-        elif '15:00' <= str(times) <= '22:00':
+        elif '15:00' <= str(time) <= '22:00':
             time_of_day = 'Добрый вечер'
             conclusion["greeting"] = time_of_day
         else:
@@ -56,8 +60,17 @@ def date_tim(times: time):
 
         cards = reader_xlsx(path)
         cards_number.append(cards)
+
+        if date:
+            #date_format = date.strftime("%d.%m.%Y")
+            number_format = sort_data(cards_number, date)
+        else:
+            data_today = datetime.date.today()
+            date_format = data_today.strftime("%d.%m.%Y")
+            number_format = sort_data(cards_number, date_format)
+
         logger.info("Перебор списка cards_number для получения данных")
-        for c in cards_number[0]:
+        for c in number_format:
             currencies = c['Валюта операции']
             numbers = c['Номер карты']
             summa = c['Сумма операции']
@@ -135,4 +148,4 @@ def date_tim(times: time):
 
 
 if __name__ == '__main__':
-    date_tim(time)
+    date_tim("13.10.2018")

@@ -7,8 +7,8 @@ from views import reader_xlsx
 
 load_dotenv()
 
-path = os.getenv("PATH_XLSX")
-filename_cashback = os.getenv("PATH_SETTING_CASHBACK")
+path = "../data/operations.xlsx"
+filename_cashback = "../user_settings_cashback.json"
 
 log_dir = '../log'
 log_file = os.path.join(log_dir, 'services.log')

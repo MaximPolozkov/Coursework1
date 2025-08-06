@@ -12,7 +12,7 @@ from views import reader_xlsx
 
 load_dotenv()
 
-xlsx = os.getenv("PATH_XLSX")
+xlsx = "../data/operations.xlsx"
 
 log_dir = '../log'
 log_file = os.path.join(log_dir, 'reports.log')
@@ -59,7 +59,6 @@ def wastes_category(category: pd.DataFrame, name_category: str, optional_data: s
         print("Ошибка: столбец 'Сумма операции с округлением' не найден в DataFrame.")
         return pd.DataFrame()
 
-
     category["Дата операции"] = pd.to_datetime(category["Дата операции"].str.split().str[0], format="%d.%m.%Y").dt.date
     logger.info("Получаем дату по полю Дата операции и преобразуем ее в объект datetime")
     category["Категория операции"] = name_category
@@ -69,11 +68,11 @@ def wastes_category(category: pd.DataFrame, name_category: str, optional_data: s
 
     logger.info("Создаем Датафрэйм с условиями")
     filtered_category = category[
-    (category["Дата операции"] >= three_month_ago) &
-    # (category["Дата операции"] <= data_obj) &
-    (category["Категория"] == name_category) &
-    (category["Сумма операции с округлением"] != "")
-    ].copy()
+        (category["Дата операции"] >= three_month_ago) &
+        #(category["Дата операции"] <= data_obj) &
+        (category["Категория"] == name_category) &
+        (category["Сумма операции с округлением"] != "")
+        ].copy()
 
     logger.info("Возврощаем созданный Датафрэйм")
     return filtered_category
@@ -82,7 +81,5 @@ def wastes_category(category: pd.DataFrame, name_category: str, optional_data: s
 if __name__ == "__main__":
     x = reader_xlsx(xlsx)
     df = pd.DataFrame(x)
-    t = wastes_category(df, "Супермаркеты", "03.01.2018")
-    print(t)
-
+    t = wastes_category(df, "Супермаркеты", "04.01.2018")
 

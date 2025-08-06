@@ -49,35 +49,40 @@ def reader_xlsx(str_xlsx: str):
 
 
 @handle_date_errors
-def sort_data(files_patch: List[Dict[str, Any]], date_column: str) -> Dict[str, Any]:
+def sort_data(files_patch: List[Dict[str, Any]], date_column: str) -> List[Dict[str, Any]]:
     """Функция для сортировки операций с 1 числа месяца по текущую"""
 
     logger.info("Запускаем функцию")
-    if not date_column or not date_column.split():
-        logger.info("Столбец с датой не указан или пуст.")
-        logger.info("Возвращаем пустой словарь")
-        return {}
+
+    # if not date_column:
+        # logger.info("Столбец с датой не указан или пуст.")
+        # logger.info("Возвращаем пустой словарь")
+        # return []
 
     end_date = datetime.datetime.strptime(date_column.split()[0], "%d.%m.%Y").date()
     logger.info("Записываем дату в end_date формате день, месяц, год")
     start_date = datetime.date(end_date.year, end_date.month, 1)
     logger.info("Записываем 1 число данного месяца и года в start_date")
+    append_files = []
+    for item in files_patch[0]:
+        if item.get("Дата операции"):
+            logger.info("Запускаем цикл для переданного списка в функцию со словарями")
+            item_data_str = item.get("Дата операции")
+            logger.info("Ищем поле дату операции с ее ключом")
+            if not item_data_str:
+                logger.info("Если нету даты операции пропускаем и продолжаем работу цикла")
+                continue
 
-    for item in files_patch:
-        logger.info("Запускаем цикл для переданного списка в функцию со словарями")
-        item_data_str = item.get("Дата операции")
-        logger.info("Ищем поле дату операции с ее ключом")
+            item_data = datetime.datetime.strptime(item_data_str.split()[0], "%d.%m.%Y").date()
+            logger.info("Если дата имеет не верный формат делаем правильный и записываем в переменную item_data")
+            if start_date <= item_data <= end_date:
+                logger.info("Происходит получение операций по дате с первого числа данного месяца по принятую в функции")
+                append_files.append(item)
 
-        if not item_data_str:
-            logger.info("Если нету даты операции пропускаем и продолжаем работу цикла")
-            continue
+    append_files.sort(key=lambda c: c["Дата операции"])
+    logger.info("Возвращаем те операции которые были отсортированы по дате")
 
-        item_data = datetime.datetime.strptime(item_data_str.split()[0], "%d.%m.%Y").date()
-        logger.info("Если дата имеет не верный формат делаем правильный и записываем в переменную item_data")
-        if start_date <= item_data <= end_date:
-            logger.info("Происходит получение операций по дате с первого числа данного месяца по принятую в функции")
-            logger.info("Возвращаем те операции которые были отсортированы по дате")
-            return item
+    return append_files
 
 
 def get_currency(base: str, token: str) -> List[Dict[str, Any]]:  # token: ex_change_api

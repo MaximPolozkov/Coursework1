@@ -1,28 +1,4 @@
-2025-08-04 21:40:28,221 views.py reader_xlsx INFO: Запускаем функцию
-2025-08-04 21:40:28,221 views.py reader_xlsx INFO: Читаем файл exel
-2025-08-04 21:40:30,561 views.py reader_xlsx INFO: Записываем в словарь
-2025-08-04 21:40:30,631 views.py reader_xlsx INFO: Возвращаем записанный словарь
-2025-08-04 21:40:30,754 views.py get_currency INFO: Запускаем функцию
-2025-08-04 21:40:30,754 views.py get_currency INFO: Адрес API в переменной url
-2025-08-04 21:40:31,069 views.py get_currency INFO: Полученные данные response
-2025-08-04 21:40:31,069 views.py get_currency INFO: Проверяем статус ошибки
-2025-08-04 21:40:31,069 views.py get_currency INFO: Записываем в json формат
-2025-08-04 21:40:31,069 views.py get_currency INFO: Возвращаем данные по полю 'conversion_rates'
-2025-08-04 21:40:31,070 views.py get_currency INFO: Запускаем функцию
-2025-08-04 21:40:31,070 views.py get_currency INFO: Адрес API в переменной url
-2025-08-04 21:40:31,365 views.py get_currency INFO: Полученные данные response
-2025-08-04 21:40:31,365 views.py get_currency INFO: Проверяем статус ошибки
-2025-08-04 21:40:31,365 views.py get_currency INFO: Записываем в json формат
-2025-08-04 21:40:31,366 views.py get_currency INFO: Возвращаем данные по полю 'conversion_rates'
-2025-08-04 21:40:31,367 views.py get_stocks INFO: Запускаем функцию
-2025-08-04 21:40:31,367 views.py get_stocks INFO: Передаем url
-2025-08-04 21:40:31,367 views.py get_stocks INFO: Передаем формат в запрос
-2025-08-04 21:40:34,827 views.py get_stocks INFO: Происходит подключение к API
-2025-08-04 21:40:34,827 views.py get_stocks INFO: Получаем статус ошибки
-2025-08-04 21:40:34,920 views.py get_stocks INFO: Записываем в формат json
-2025-08-04 21:40:34,920 views.py get_stocks INFO: Возвращаем полученные данные
-2025-08-04 21:40:34,921 views.py get_prices_ticker INFO: Запускаем функцию
-2025-08-04 21:40:34,921 views.py get_prices_ticker INFO: Создаем список для хранения поля названия акции
-2025-08-04 21:40:34,921 views.py get_prices_ticker INFO: Создаем список для фильтрации названия акций
-2025-08-04 21:40:34,921 views.py get_prices_ticker INFO: Создаем счетчик чтобы ограничить количество записей
-2025-08-04 21:40:34,921 views.py get_prices_ticker INFO: Запускаем цикл для получения акций и их фильтрации
+2025-08-06 20:37:48,910 views.py reader_xlsx INFO: Запускаем функцию
+2025-08-06 20:37:48,910 views.py reader_xlsx INFO: Читаем файл exel
+2025-08-06 20:37:51,111 views.py reader_xlsx INFO: Записываем в словарь
+2025-08-06 20:37:51,182 views.py reader_xlsx INFO: Возвращаем записанный словарь
