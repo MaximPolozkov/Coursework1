@@ -1,0 +1,4 @@
+2025-08-07 19:56:39,785 views.py reader_xlsx INFO: Запускаем функцию
+2025-08-07 19:56:39,786 views.py reader_xlsx INFO: Читаем файл exel
+2025-08-07 19:56:42,174 views.py reader_xlsx INFO: Записываем в словарь
+2025-08-07 19:56:42,244 views.py reader_xlsx INFO: Возвращаем записанный словарь

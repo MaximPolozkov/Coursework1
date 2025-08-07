@@ -1,0 +1,4 @@
+2025-08-06 20:27:26,904 services.py analyze_cashback_categories INFO: Запускаем функцию
+2025-08-06 20:27:29,224 services.py analyze_cashback_categories INFO: Запускаем цикл для списка analyze
+2025-08-06 20:27:29,321 services.py analyze_cashback_categories INFO: Запускаем цикл для date_operation
+2025-08-06 20:27:29,321 services.py analyze_cashback_categories INFO: Записываем в файл user_settings_cashback
