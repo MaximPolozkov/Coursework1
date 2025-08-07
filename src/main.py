@@ -3,15 +3,14 @@ import json
 import logging
 import os
 import dotenv
-from views import get_current_time, reader_xlsx, get_currency, get_stocks, get_prices_ticker, sort_data
+from views import (get_current_time, reader_xlsx, get_currency, get_stocks, get_prices_ticker, sort_data,
+                   get_currency_rates)
 
 dotenv.load_dotenv()
 
 ex_change_api = os.getenv('API_KEY_CURRENCY')
 secret_api = os.getenv('API_KEY_SECURITY')
 ticker_api = os.getenv('API_KEY_TICKER')
-
-filename_json = "../user_settings.json"
 
 path = "../data/operations.xlsx"
 
@@ -37,8 +36,6 @@ def date_tim(date: str):
     logger.info("Запуск функции")
     """Главная функция, принимающая на вход строку с датой"""
     start = input("Введите ???\n")
-    #datetime_object = datetime.datetime.strptime(data_tim, "%d.%m.%Y")
-    #date = datetime_object.strptime("%d.%m.%Y")
 
     time = get_current_time()
 
@@ -56,41 +53,58 @@ def date_tim(date: str):
         else:
             time_of_day = 'Доброй ночи'
             conclusion["greeting"] = time_of_day
-        print(conclusion["greeting"])
+        # print(conclusion["greeting"])
 
         cards = reader_xlsx(path)
         cards_number.append(cards)
 
         if date:
-            #date_format = date.strftime("%d.%m.%Y")
+            # date_format = date.strftime("%d.%m.%Y")
             number_format = sort_data(cards_number, date)
+            currency = number_format
         else:
             data_today = datetime.date.today()
             date_format = data_today.strftime("%d.%m.%Y")
             number_format = sort_data(cards_number, date_format)
+            currency = number_format
 
         logger.info("Перебор списка cards_number для получения данных")
-        for c in number_format:
+        filter_format = {}
+        for c in currency:
             currencies = c['Валюта операции']
             numbers = c['Номер карты']
             summa = c['Сумма операции']
             bonuses = c['Бонусы (включая кэшбэк)']
-            number_for = {
-                'Номер карты': numbers,
-                'Общая сумма расходов': summa,
-                'Валюта операции': currencies,
-                'Бонусы (включая кэшбэк)': bonuses
-            }
-            conclusion["cards"].append(number_for)
 
-            print(f"Номер карты: {numbers}\n Общая сумма расходов: {summa} {currencies}\n  Бонусы (включая кэшбэк): {bonuses}\n")
+            if currencies != "RUB":
+                exchange_rate = get_currency_rates(currencies, "RUB", ex_change_api)
+                summa = round(exchange_rate * summa, 2)
+                currencies = "RUB"
 
-        cards_number[0].sort(key=lambda c: c["Сумма операции"])
+                int(summa)
+                int(bonuses)
+
+            if numbers not in filter_format:
+                filter_format[numbers] = {
+                    "Номер карты": numbers,
+                    "Общая сумма расходов": round(0, 2),
+                    "Общая сумма бонусов": round(0, 2)
+                }
+            str(summa)
+            str(bonuses)
+
+            filter_format[numbers]["Общая сумма расходов"] += abs(summa)
+            filter_format[numbers]["Общая сумма бонусов"] += bonuses
+
+        card_list = list(filter_format.values())
+
+        conclusion["cards"].append(card_list)
 
         logger.info("Перебор списка cards_number для получения 5 словарей")
-        for i in range(min(5, len(cards_number[0]))):
-            card = cards_number[0][i]
-            print(f"Сумма платежа: {card['Сумма платежа']} {card['Валюта платежа']}\n")
+
+        for i in range(min(5, len(currency))):
+            card = currency[i]
+            # print(f"Сумма платежа: {card['Сумма платежа']} {card['Валюта платежа']}\n")
             top_translations = {
                 'Дата платежа': card['Дата платежа'],
                 'Категория': card['Категория'],
@@ -111,20 +125,19 @@ def date_tim(date: str):
         for i in list_usd:
             cycle_rub = i.get("RUB")
             list_rub = {"currency": "USD", "rate": cycle_rub}
-            print(f"{list_rub['currency']}: {list_rub['rate']} руб.\n")
+            # print(f"{list_rub['currency']}: {list_rub['rate']} руб.\n")
             conclusion["currency_rates"].append(list_rub)
 
         logger.info("Перебор списка для получения курса евро")
         for q in list_eur:
             cycle_rub = q.get("RUB")
             list_rub = {"currency": "EUR", "rate": cycle_rub}
-            print(f"{list_rub['currency']}: {list_rub['rate']} руб.\n")
+            # print(f"{list_rub['currency']}: {list_rub['rate']} руб.\n")
             conclusion["currency_rates"].append(list_rub)
 
         list_top = []
         stock_top = get_stocks(secret_api)
         ticker_top = get_prices_ticker(stock_top, ticker_api)
-
         list_top.append(ticker_top)
 
         logger.info("Перебор списка для получения названия и цены акции")
@@ -134,13 +147,12 @@ def date_tim(date: str):
             list_plus = {
                 "stock": list_sy,
                 "price": list_ask
-                }
-            print(f"Название акции: {list_sy}\n Цена: {list_ask}\n")
+            }
+            # print(f"Название акции: {list_sy}\n Цена: {list_ask}\n")
             conclusion["stock_prices"].append(list_plus)
 
-        logger.info("Запись в json файл")
-        with open(filename_json, "w", encoding="utf-8") as f:
-            json.dump(conclusion, f, ensure_ascii=False, indent=4)
+        jsun_response = json.dumps(conclusion, ensure_ascii=False, indent=4)
+        return jsun_response
 
     else:
         logger.info("Перезапуск функции")
@@ -148,4 +160,5 @@ def date_tim(date: str):
 
 
 if __name__ == '__main__':
-    date_tim("13.10.2018")
+    x = date_tim("12.01.2018")
+    print(x)

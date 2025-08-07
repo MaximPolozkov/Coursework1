@@ -54,11 +54,6 @@ def sort_data(files_patch: List[Dict[str, Any]], date_column: str) -> List[Dict[
 
     logger.info("Запускаем функцию")
 
-    # if not date_column:
-        # logger.info("Столбец с датой не указан или пуст.")
-        # logger.info("Возвращаем пустой словарь")
-        # return []
-
     end_date = datetime.datetime.strptime(date_column.split()[0], "%d.%m.%Y").date()
     logger.info("Записываем дату в end_date формате день, месяц, год")
     start_date = datetime.date(end_date.year, end_date.month, 1)
@@ -76,7 +71,7 @@ def sort_data(files_patch: List[Dict[str, Any]], date_column: str) -> List[Dict[
             item_data = datetime.datetime.strptime(item_data_str.split()[0], "%d.%m.%Y").date()
             logger.info("Если дата имеет не верный формат делаем правильный и записываем в переменную item_data")
             if start_date <= item_data <= end_date:
-                logger.info("Происходит получение операций по дате с первого числа данного месяца по принятую в функции")
+                logger.info("Происходит получение операций по дате с первого числа данного месяца по принятую")
                 append_files.append(item)
 
     append_files.sort(key=lambda c: c["Дата операции"])
@@ -171,5 +166,5 @@ def get_current_time():
     # r = reader_xlsx(xsxl)
     # print(r)
     # c = get_stocks(secret_api)
-    # e = get_prices_ticker(c, "API_KEYa079XDRJJR9vKUvsYs8K5VXLrhS2nbtzH5WxzjV0tXzDRL")
+    # e = get_prices_ticker(c, "API_KEYc3DZGNM7L7KGPRZXE4RZAUQRKT66S7HQ")
     # print(e)
